@@ -5,4 +5,5 @@ services:
       - "3456:3456"
     environment:
       - CLAUDE_CODE_OAUTH_TOKEN=${CLAUDE_CODE_OAUTH_TOKEN}
+      - CLAUDE_PROXY_HOST=0.0.0.0
     restart: unless-stopped
