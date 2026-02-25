@@ -14,10 +14,8 @@ WORKDIR /app
 RUN git clone https://github.com/rynfar/opencode-claude-max-proxy.git . && \
     bun install
 
-# Patch: Allow WebFetch and WebSearch (remove from blocked list so Claude can access internet)
-# Patch: Bind to 0.0.0.0 instead of 127.0.0.1
-RUN sed -i 's/"WebFetch", "WebSearch", "TodoWrite"/"TodoWrite"/' src/proxy/server.ts && \
-    sed -i 's/host: "127.0.0.1"/host: process.env.CLAUDE_PROXY_HOST || "0.0.0.0"/' src/proxy/types.ts
+# Copy patched server that fixes multi-turn streaming and enables WebFetch/WebSearch
+COPY server-patch.ts src/proxy/server.ts
 
 EXPOSE 3456
 
