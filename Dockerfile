@@ -4,6 +4,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /
 
 RUN npm install -g @anthropic-ai/claude-code claude-max-api-proxy
 
+COPY start.mjs /app/start.mjs
+
 EXPOSE 3456
 
-CMD ["claude-max-api"]
+CMD ["node", "/app/start.mjs"]
