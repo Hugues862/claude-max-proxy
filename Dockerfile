@@ -4,8 +4,10 @@ RUN apt-get update && apt-get install -y --no-install-recommends git && rm -rf /
 
 RUN npm install -g @anthropic-ai/claude-code claude-max-api-proxy
 
-COPY start.mjs /app/start.mjs
+# Patch the server to bind to 0.0.0.0 instead of 127.0.0.1
+RUN PROXY_DIR=$(npm root -g)/claude-max-api-proxy && \
+    sed -i 's/host = "127.0.0.1"/host = process.env.HOST || "0.0.0.0"/' $PROXY_DIR/dist/server/index.js
 
 EXPOSE 3456
 
-CMD ["node", "/app/start.mjs"]
+CMD ["claude-max-api"]
